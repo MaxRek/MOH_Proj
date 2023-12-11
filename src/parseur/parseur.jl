@@ -10,9 +10,7 @@ function parseData(path :: String)
     push!(dfS, select(df, 1))
     push!(dfInfoS, select(df, Not(1)))
     
-
     df = DataFrame(GeoJSON.read(String(path*"mapNiv1.geojson")))
-    df = select(df,Not(1))
 
     push!(dfS, select(df, 1))
     push!(dfInfoS, select(df, Not(1)))
