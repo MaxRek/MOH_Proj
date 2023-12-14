@@ -1,0 +1,25 @@
+Test begins : 
+--------------------------------------------------
+ Test 1 : insertion [5,6]
+Trying insert (5,6) at floor2:
+--------------------------------------------------
+Test 2 : insertion [7,7]
+Trying insert (7,7) at floor2:
+--------------------------------------------------
+Test 3 : insertion [2,4]
+Trying insert (2,4) at floor6:
+--------------------------------------------------
+Test 4 : insertion [7,1]
+Trying insert (7,1) at floor2:
+--------------------------------------------------
+Test 5 : insertion [6,3]
+Trying insert (6,3) at floor4:
+--------------------------------------------------
+Test 6 : insertion [8,4]
+Trying insert (8,4) at floor2:
+--------------------------------------------------
+Test 7 : insertion [3,7]
+Trying insert (3,7) at floor2:
+--------------------------------------------------
+Test 7 : insertion [3,7]
+Trying insert (1,9) at floor4:
