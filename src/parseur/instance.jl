@@ -1,4 +1,5 @@
 include("parseur.jl")
+
 using Distances
 
 function indexList(max :: Int64, s :: Int64)
@@ -109,7 +110,7 @@ function build_Costs(dfS :: Vector{DataFrame})
     moyenne1 = cumul1/((size(dfS[2])[1]-1)*size(dfS[3])[1]-1)
     #println("cumul = ",cumul," Moyenne = ", cumul/((size(dfS[2])[1]-1)*size(dfS[3])[1]))
     for j in 1:size(dfS[2])[1]
-        append!(Ac[i], round(Int64,0.75*moyenne1+rand()*moyenne1*0.5)*4) 
+        append!(Ac[i], round(Int64,0.75*moyenne1+rand()*moyenne1*0.5)*2) 
         #A["zj",j] = round(Int64,0.75*moyenne+rand()*moyenne*0.5)*4
     end
 
@@ -119,7 +120,7 @@ function build_Costs(dfS :: Vector{DataFrame})
     #z1 = coût ouverture concentrateur lvl 2
     moyenne2 = cumul2/((size(dfS[1])[1]-1)*size(dfS[2])[1]-1)
     for j in 1:size(dfS[1])[1]
-        append!(Ac[i],round(Int64,0.75*moyenne2+rand()*moyenne2*0.5)*10)
+        append!(Ac[i],round(Int64,0.75*moyenne2+rand()*moyenne2*0.5)*5)
         #A["zk",j] = round(Int64,0.75*moyenne2+rand()*moyenne2*0.5)*10
     end
 
