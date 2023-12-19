@@ -102,5 +102,3 @@ if(ToArray(sk) == [[1,9],[2,4], [6,3], [7,1]])
 else
   print(ToArray(sk, true))
 end
-
-
