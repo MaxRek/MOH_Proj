@@ -6,7 +6,7 @@ include("dominance.jl")
 println("\n---- Skiplist ----")
 include("skiplist.jl")
 
-println("\n---- orderedVector ----")
+println("\n---- OrderedVector ----")
 include("orderedVector.jl")
 
 println("---- ")

@@ -129,24 +129,3 @@ function t_connected_to_cl1(column :: Vector{Int64})
     end
     return indexes
 end
-
-function building_sets(pop :: Vector{solution})
-    #init
-    sets = Vector{orderedVector}()
-    copy_pop = deepcopy(pop)
-    i = 1
-    #iteration, we put all solution in orderedVector, would imply dominates, therefore will 
-    while(!isempty(copy_pop))
-        push!(sets,orderedVector(Vector{solution}()))
-        for j in 1:size(copy_pop)[1]
-            insert(sets[i],pop[j])
-        end
-        
-        #taking all z1,z2 of orderedVector of rank i, used to remove from copy_pop
-        Z = ToArray(sets[i])
-        filter!((x)->(x.z1,x.z2) in Z,copy_pop)
-        
-        i += 1
-
-    end
-end

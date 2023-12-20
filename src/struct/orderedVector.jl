@@ -31,10 +31,19 @@ function insert(ov :: orderedVector, s :: solution)
   end
  end
 
-function ToArray(ov :: orderedVector)
+function toArray(ov :: orderedVector)
   a = Vector{Tuple{Int64, Int64}}()
   for i in 1:size(ov.vec)[1]
    push!(a,(ov.vec[i].z1,ov.vec[i].z2))
   end
   return a
+end
+
+function print_orderedVector(ov :: orderedVector)
+  if(isempt(ov.vec))
+    println("orderedVector vide")
+  else
+    array = toArray(ov)
+    println("orderedVector : ",array)
+  end
 end
