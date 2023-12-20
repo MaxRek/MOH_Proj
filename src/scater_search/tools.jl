@@ -1,3 +1,5 @@
+include("../struct/orderedVector.jl")
+
 function fill_xjk(s :: solution, Axjk :: Matrix{Int64}, AzJ :: Vector{Int64}, alpha :: Float64)
     #indexes = vec(collect(1:size(s.x)[1]))
     K = findall(x->x==1,s.zK)
@@ -37,7 +39,7 @@ function fill_xjk(s :: solution, Axjk :: Matrix{Int64}, AzJ :: Vector{Int64}, al
     return s
 end
 
-function fill_yij(s :: solution, I :: Int64, Ayij :: Matrix{Int64}, C :: Int64)
+function fill_yij(s :: solution, I :: Int64, Ayij :: Matrix{Int64}, C :: Int64, alpha :: Float64)
     i_to_place = collect(1:I)
     while(size(i_to_place)[1] > 0)
         i=i_to_place[1]
@@ -126,4 +128,25 @@ function t_connected_to_cl1(column :: Vector{Int64})
         end
     end
     return indexes
+end
+
+function building_sets(pop :: Vector{solution})
+    #init
+    sets = Vector{orderedVector}()
+    copy_pop = deepcopy(pop)
+    i = 1
+    #iteration, we put all solution in orderedVector, would imply dominates, therefore will 
+    while(!isempty(copy_pop))
+        push!(sets,orderedVector(Vector{solution}()))
+        for j in 1:size(copy_pop)[1]
+            insert(sets[i],pop[j])
+        end
+        
+        #taking all z1,z2 of orderedVector of rank i, used to remove from copy_pop
+        Z = ToArray(sets[i])
+        filter!((x)->(x.z1,x.z2) in Z,copy_pop)
+        
+        i += 1
+
+    end
 end

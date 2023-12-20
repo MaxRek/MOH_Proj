@@ -12,35 +12,38 @@ function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Ve
     Axjk = reshape(Ac[2],J,K)
     Ayij = reshape(Ac[3],I,J)
     AzJ = Ac[4]
-
-    #println("I = ",I," J = ",J," K = ",K)
-
-    if p == 0 
-        model = build_z1_model(I,J,K,C,Ac[2:5])
-        optimize!(model)
-        print_z1_model(model)
-        zk = value.(model[:zk])
-        for i in zk
-            if i > 0.9
-                p += 1
+    if(J*C < K)
+        println("J (",J,")*C(",C,") (",J*C,") < K (",K,")\n résolution impossible, fin de programme")
+    else
+        if p == 0 
+            model = build_z1_model(I,J,K,C,Ac[2:5])
+            optimize!(model)
+            print_z1_model(model)
+            zk = value.(model[:zk])
+            for i in zk
+                if i > 0.9
+                    p += 1
+                end
             end
+            if p == 1
+                p = 2
+            end
+            #println("p = ", p)
         end
-        if p == 1
-            p = 2
-        end
-        #println("p = ", p)
-    end
 
-    solution = init_solution(I,J,K)
+        s = init_solution(I,J,K)
+        
+        #z2
+        s.zK = vec(grasp_z2(Ad, K, p, M, alpha[1]))
+        #println("zK = ",solution.zK)
+
+        #z1
+        s = grasp_z1(s, I,J,K,C, Axjk, Ayij, AzJ ,alpha[2:3])
     
-    #z2
-    solution.zK = vec(grasp_z2(Ad, K, p, M, alpha[1]))
-    #println("zK = ",solution.zK)
+    end
+        #println("I = ",I," J = ",J," K = ",K)
 
-    #z1
-    solution = grasp_z1(solution, I,J,K,C, Axjk, Ayij, AzJ ,alpha[2:3])
-
-    return solution
+    return s
 end
 
 function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 , Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64}, AzJ :: Vector{Int64}, alpha :: Vector{Float64})
@@ -53,10 +56,10 @@ function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 
     s = fill_xjk(s, Axjk, AzJ,alpha[1])
 
     #Filling yij with the best choices, opening all zJ
-    s = fill_yij(s, I ,Ayij, C)
+    s = fill_yij(s, I ,Ayij, C, alpha[2])
 
     #Using DROP_heuristics for facility location and grasp
-    s = grasp_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ,alpha[2])
+    #s = grasp_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ,alpha[3])
 
     return s
 end
