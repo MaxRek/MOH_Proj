@@ -1,9 +1,8 @@
 include("grasp.jl")
 
-function scater_search()
+function scater_search(P :: Int64, Ac :: Vector{Vector{Int64}}, M :: Int64)
     #Gen P
-        #Diversification Generation Method
-        
+        # Diversification Generation Method
         # Improvement Method
 
     #while !stop
@@ -11,6 +10,12 @@ function scater_search()
 
         #Stop 
 
+        #subset generation Method
+
+        #Solution Combination Method
+
+        #Improvement method
+    #end
     
     
 

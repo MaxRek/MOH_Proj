@@ -4,7 +4,7 @@ include("tools.jl")
 
 
 
-function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Vector{Float64},p = 0)
+function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Vector{Float64},p)
     K = size(Ac[5])[1]
     J = size(Ac[4])[1]
     I = Int(size(Ac[3])[1]/J)
