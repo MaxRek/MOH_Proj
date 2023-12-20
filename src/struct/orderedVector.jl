@@ -1,14 +1,5 @@
 include("solution.jl")
 
-mutable struct solution
-  z1 :: Int64
-  z2 :: Int64
-  x :: Matrix{Int64}
-  y :: Matrix{Int64}
-  zK :: Vector{Int64}
-  zJ :: Vector{Int64}
-end
-
 mutable struct orderedVector
   vec::Vector{solution}
 end
