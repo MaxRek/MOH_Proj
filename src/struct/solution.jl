@@ -78,96 +78,99 @@ function print_solution(s :: solution, io = "")
     # println(s.zJ)
     # println(s.zK)
     if(io == "")
-        println("_________________________\n z1 = ", s.z1,", z2 = ",s.z2,"\n_____________________________\n C_l1 to Terminal")
+        println("__z1 = ", s.z1,", z2 = ",s.z2,"__")
         for j in 1:size(s.y)[2]
             bool = false
             for i in 1:size(s.y)[1]
                 if(s.y[i,j] >= 0.9)
                     if(!bool)
-                        print("\nC_l1 : ",j,", zj_j = ",s.zJ[j]," connecté à  : ")
+                        print("\nC_l1 ",j," {")
                         bool = true
                     end
                     print(i," ")
                 end
+                if bool
+                    print("}")
+                end
             end
         end
 
-        println("\n_____________________________\n zj : ")
+        println("zj : ")
         for i in 1:size(s.zJ)[1]
             if(s.zJ[i] >= 0.9)
                 print(i," ")
             end
         end
 
-        println("\n_____________________________\n C_l2 to C_l1")
-
         for k in 1:size(s.x)[2]
             bool = false
             for j in 1:size(s.x)[1]
                 if(s.x[j,k] >= 0.9)
                     if(!bool)
-                        println("\nC_l2 : ",k,", zk_k = ",s.zK[k]," connecté à : ")
+                        println("\nC_l2 ",k," {")
                         bool = true
                     end
                     print(j," ")
                 end
+                if bool
+                    print("}")
+                end
             end
         end
 
-        println("\n_____________________________\n zk : ")
+        println("zk : ")
         for i in 1:size(s.zK)[1]
             if(s.zK[i] >= 0.9)
                 print(i," ")
             end
         end
 
-        println("\n")
-
     else
-        println("_________________________\n z1 = ", s.z1,", z2 = ",s.z2,"\n_____________________________\n C_l1 to Terminal")
-
-        for j in :1size(s.y)[2]
+        println(io,"__z1 = ", s.z1,", z2 = ",s.z2,"__")
+        for j in 1:size(s.y)[2]
             bool = false
             for i in 1:size(s.y)[1]
-                if(s.y[i,j] > 0.9)
+                if(s.y[i,j] >= 0.9)
                     if(!bool)
-                        println(io,"\nC_l1 : ",j,", zj_j = ",s.zJ[j]," connecté à  : ")
+                        print(io,"\nC_l1 ",j," {")
                         bool = true
                     end
                     print(io,i," ")
                 end
+                if bool
+                    print(io,"}")
+                end
             end
         end
 
-        println(io,"\n_____________________________\n zj : ")
+        println(io,"zj : ")
         for i in 1:size(s.zJ)[1]
             if(s.zJ[i] >= 0.9)
                 print(io,i," ")
             end
         end
 
-
         for k in 1:size(s.x)[2]
             bool = false
             for j in 1:size(s.x)[1]
                 if(s.x[j,k] >= 0.9)
                     if(!bool)
-                        println(io,"C_l2 : ",k,", zk_k = ",zk[k]," connecté à : ")
+                        println(io,"\nC_l2 ",k," {")
                         bool = true
                     end
                     print(io,j," ")
                 end
+                if bool
+                    print(io,"}")
+                end
             end
         end
 
-        println(io,"\n_____________________________\n zk : ")
+        println(io,"zk : ")
         for i in 1:size(s.zK)[1]
             if(s.zK[i] >= 0.9)
                 print(io,i," ")
             end
         end
-
-        println(io,"\n")
-
     end
 end
