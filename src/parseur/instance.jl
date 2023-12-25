@@ -22,6 +22,26 @@ function indexList(max :: Int64, s :: Int64)
     return sort(index)
 end
 
+function write_Instance(path_data :: String, ratio :: Vector{Float64}, rM :: Float64)
+    dfS, dfInfoS = build_Instance(path_data, ratio)
+    Ac, M = build_Costs(dfS, rM)
+    name = string(Int(size(Ac[3])[1]/size(Ac[4])[1]),"_",size(Ac[4])[1],"_",size(Ac[5])[1])
+
+    path = String("in/instance/"*name)
+    if(!isdir(path))
+        mkdir(path)
+    end
+    for i in 1:3
+        CSV.write(string(path*"/dfS_",i,".csv"), dfS[1])
+        CSV.write(string(path,"/dfInfoS_",i,".csv"), dfInfoS[1])
+    end
+
+    io = open(string(path,"/Ac.txt"),"w")
+    println(io, Ac)
+    println(io, M)
+    close(io)
+end
+
 function write_Instance(name :: String, dfS :: Vector{DataFrame}, dfInfoS :: Vector{DataFrame}, Ac :: Vector{Vector{Int64}}, M :: Int64)
     path = String("in/instance/"*name)
     if(!isdir(path))
