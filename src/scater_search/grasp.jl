@@ -49,10 +49,10 @@ function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 
     # println(m_cl2_cl1)
     # println(m_cl1_t)    
 
-    #filling xjk for the best connexion possible, at least one connection to k
+    #filling xjk for the almost best grasp, at least one connection to k
     s = fill_xjk(s, Axjk, AzJ,alpha[1])
 
-    #Filling yij with the best choices, opening all zJ
+    #Filling yij with the best choices, opening maximum of zJ
     s = fill_yij(s, I ,Ayij, C)
 
     #Using DROP_heuristics for facility location and grasp
@@ -87,7 +87,7 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
     ZKt = zeros(Int64, 1,K)
     memory = Vector{Int64}()
     if(p >= K)
-        println("p (",p,") >= K (",K,"), z2 complétement nullifié, interruption)")
+        #println("p (",p,") >= K (",K,"), z2 complétement nullifié, interruption)")
         zK = 0
     else
         while(sum(zK) < p)
@@ -105,7 +105,7 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
                 end
             end
             threshold = minK + alpha * (maxK - minK)
-            println("max = ",maxK,", min = ",minK,", threshold = ",threshold,"\n ZKt = ",ZKt)
+            #println("max = ",maxK,", min = ",minK,", threshold = ",threshold,"\n ZKt = ",ZKt)
             indexes = Vector{Int64}()
             for i in 1:K
                 if !(i in memory)
@@ -114,11 +114,11 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
                     end
                 end
             end
-            println("indexes = ", indexes,", memory = ",memory)
+            #println("indexes = ", indexes,", memory = ",memory)
             i = rand_in_list(indexes)
             append!(memory,indexes[i])
             zK[1,indexes[i]] = 1
-            println("zK = ",zK)
+            #println("zK = ",zK)
         end
     end
     return zK

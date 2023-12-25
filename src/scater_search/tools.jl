@@ -1,32 +1,37 @@
 function fill_xjk(s :: solution, Axjk :: Matrix{Int64}, AzJ :: Vector{Int64}, alpha :: Float64)
     #indexes = vec(collect(1:size(s.x)[1]))
     K = findall(x->x==1,s.zK)
-    #println("K = ",K)
+    println("alpha = ",alpha)
 
 
     for j in 1:size(s.x)[1]
         # i = indexes[rand_in_list(indexes)]
-        i_b = 1
-        v_i = typemax(Int64)
+        min_v_i = typemax(Int64)
+        max_v_i = typemin(Int64)
+
         for k in K
-            if (Axjk[j,k] + AzJ[j]) < v_i
-                v_i = (Axjk[j,k] + AzJ[j])
-                i_b = k
+            #println(" Axjk[j,k] + AzJ[j] = ", Axjk[j,k] + AzJ[j])
+            if (Axjk[j,k] + AzJ[j]) < min_v_i
+                min_v_i = (Axjk[j,k] + AzJ[j])
+            else 
+                if(Axjk[j,k] + AzJ[j] > max_v_i)  
+                    max_v_i = (Axjk[j,k] + AzJ[j])
+                end
             end
         end
-        max_v_i = v_i*(1+alpha)
-        #println("v_i = ", v_i,", max_v_i = ",max_v_i)
+        threshold = min_v_i + alpha * (max_v_i - min_v_i)
+        println("min_v_i = ", min_v_i,", max_v_i = ",max_v_i,", threshold = ",threshold)
 
         indexes = Vector{Int64}()
         for k in K
-            if (Axjk[j,k] + AzJ[j]) <= max_v_i
-                #println("k = ",k)
+            if (Axjk[j,k] + AzJ[j]) <= threshold
+                println("k = ",k)
                 append!(indexes, k)
             end
         end
-        #println("indexes = ",indexes)
+        println("indexes = ",indexes)
         k = indexes[rand_in_list(indexes)]
-        #println(k)
+        println(k)
         s.x[j,k] = 1
         s.zJ[k] = 1
 
