@@ -91,21 +91,25 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
         zK = 0
     else
         while(sum(zK) < p)
-            max = 0
+            maxK = 0
+            minK = typemax(Int64)
             for i in 1:K
                 if !(i in memory) 
                     ZKt[i] = min(M, (sum(Ad[i,:])))
-                    if ZKt[i] > max
-                        max = ZKt[i]
+                    if ZKt[i] > maxK
+                        maxK = ZKt[i]
+                    end
+                    if ZKt[i] < minK
+                        minK = ZKt[i]
                     end
                 end
             end
-            minZ = max * alpha
-            println("max = ",max,", min = ",minZ)
+            threshold = minK + alpha * (maxK - minK)
+            println("max = ",maxK,", min = ",minK,", threshold = ",threshold,"\n ZKt = ",ZKt)
             indexes = Vector{Int64}()
             for i in 1:K
                 if !(i in memory)
-                    if(minZ <= ZKt[i])
+                    if(threshold <= ZKt[i])
                         append!(indexes,i)
                     end
                 end
