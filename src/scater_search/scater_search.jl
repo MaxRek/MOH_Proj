@@ -7,6 +7,7 @@ function scater_search(P :: Int64, Ac :: Vector{Vector{Int64}}, M :: Int64, C ::
         # Diversification Generation Method
         # Improvement Method
     pop = Vector{solution}()
+    A_s_improved = Vector{solution}()
 
     for i in 1:P
         s = grasp(Ac, M, C, alpha, p)
@@ -24,10 +25,22 @@ function scater_search(P :: Int64, Ac :: Vector{Vector{Int64}}, M :: Int64, C ::
     while it > 0
         it -= 1
         
-        #building sets
-        sets = building_sets(pop)
+        #building refSets
+        refsSets = build_refSets(pop, A_s_improved)
+        
+        subSets = build_subSets(refsSets)
 
+        s1, s2 = solution_combination(subSets)
+
+        s1 = tabu_search(s1)
+        s2 = tabu_search(s2)
+        push!(A_s_improved)
+    
     end
+        #Reference Set, Update Method
+
+        #building refSets
+
         #Stop 
 
         #subset generation Method

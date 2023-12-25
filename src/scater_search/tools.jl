@@ -5,7 +5,6 @@ function fill_xjk(s :: solution, Axjk :: Matrix{Int64}, AzJ :: Vector{Int64}, al
     K = findall(x->x==1,s.zK)
     #println("K = ",K)
 
-
     for j in 1:size(s.x)[1]
         # i = indexes[rand_in_list(indexes)]
         i_b = 1
