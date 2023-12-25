@@ -91,7 +91,7 @@ function build_Instance(path :: String, ratio :: Vector{Float64})
 end
 
 #Renvoie 
-#   - M plus grande distance * 1.5 (Int64)
+#   - M plus grande distance * rM (Int64)
 #   - Ac, tableaux de coûts où i :
 #       - 1 : Distance entre les concentrateurs lvl 2, pour z2
 #       - 2 : Connection d'un connecteur lvl 2 à lvl 1
