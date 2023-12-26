@@ -49,7 +49,7 @@ function actualize_refSets(refSets :: Vector{Vector{solution}}, A_improved :: or
         
         #Equal solutions, checking distances for both, we check distance for both
         if(domS[1]==domS[2])
-            println("No pref")
+            # println(" ----------------- No pref ----------------- ")
             d = zeros(Int64, 1, size(ind)[1])
             i_1 = Vector{Int64}()
             subpop = Vector{solution}()
@@ -62,13 +62,13 @@ function actualize_refSets(refSets :: Vector{Vector{solution}}, A_improved :: or
                 end
             end
             Ai = calc_distance_i_pop(A_improved.vec[i], subpop)
-            println("Ai = ",Ai)
+            # println("Ai = ",Ai)
 
             #no duplicates
             if(sum(Ai) > 0)
                 ip = sortperm(Ai,rev=true)[1]
-                println("ip = ",ip)
-                println("i_1 = ",i_1)
+                # println("ip = ",ip)
+                # println("i_1 = ",i_1)
 
                 if(ip in i_1)
                     popat!(refR[1],ind[ip][2])
@@ -78,41 +78,51 @@ function actualize_refSets(refSets :: Vector{Vector{solution}}, A_improved :: or
                     push!(refR[2],A_improved.vec[i])
                 end
             end
-            println("i_1 = ",i_1)
         else
             #More dominated solutions in z1
             if(domS[2]>domS[1])
-                println("z1 dominated")
+                # println("----------------- z1 dominated ----------------- ")
                 filter!(x->x[1]==1,ind)
                 d = zeros(Int64, 1, size(ind)[1])
-                subpop = deepcopy(refSets[1])
+                subpop = Vector{solution}()
+                for i in 1:size(ind)[1]
+                    push!(subpop, refSets[1][ind[i][2]])
+                end
                 Ai = calc_distance_i_pop(A_improved.vec[i], subpop)
-                println("Ai = ",Ai)
+                # println("Ai = ",Ai)
+                # println("ind = ",ind)
+
                 #no duplicates
                 if(sum(Ai) > 0)
                     ip = sortperm(Ai,rev=true)[1]
-                    println("ip = ",ip)
+                    # println("ip = ",ip)
                     popat!(refR[1],ind[ip][2])
                     push!(refR[1],A_improved.vec[i])
                 end
             else
                 #More dominated solutions in z2
-                println("z2 dominated")
+                # println("----------------- z2 dominated ----------------- ")
 
                 filter!(x->x[1]==2,ind)
                 d = zeros(Int64, 1, size(ind)[1])
-                subpop = deepcopy(refSets[1])
+                subpop = Vector{solution}()
+                for i in 1:size(ind)[1]
+                    push!(subpop, refSets[2][ind[i][2]])
+                end
                 Ai = calc_distance_i_pop(A_improved.vec[i], subpop)
-                println("Ai = ",Ai)
+                # println("Ai = ",Ai)
+                # println("ind = ",ind)
                 #no duplicates
                 if(sum(Ai) > 0)
                     ip = sortperm(Ai,rev=true)[1]
-                    println("ip = ",ip)
-                    popat!(refR[2],ind[ip][2])
+                    #println("ip = ",ip)
+                    popat!(refR[2],ip)
                     push!(refR[2],A_improved.vec[i])
                 end
             end
         end
+        # print_refSets(refSets)
+        # print_refSets(refR)
     end
 end
 
