@@ -4,7 +4,7 @@ include("src/parseur/instance.jl")
 #parameter
 ratios = [1.0,0.2,0.007]
 alphas = [0.5,0.5,0.25]
-C = 10
+C = 3
 rM = 2.0
 p = 5
 
@@ -28,10 +28,10 @@ Ad = reshape(Ac[1],K,K)
 AzJ = Ac[4]
 AzK = Ac[5]
 
-# s = grasp(Ac,M,5,alphas,3)
+s = grasp(Ac,M,C,alphas,3)
 # z1, z2 = calcZ_solution(s , M ,Ad ,AzK , AzJ, Axjk, Ayij)
 
 # Modeles
-z1_model = build_z1_model(I,J,K,C, Ac[2:5], p)
-z2_model = build_z2_model(Ac[1], M, p, K)
+#z1_model = build_z1_model(I,J,K,C, Ac[2:5], p)
+#z2_model = build_z2_model(Ac[1], M, p, K)
 #MO_model = build_MO_model(Ac[1], Ac[2:5],I,J,K,M,C,p)
