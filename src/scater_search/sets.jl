@@ -52,3 +52,39 @@ function toArray(sets :: Vector{orderedVector})
     end
     return r_sets
 end
+
+function sort_pop_by_z(pop :: Vector{solution})
+    s = size(pop)[1]
+    ind_z1 = zeros(Int64,1,s)
+    ind_z2 = zeros(Int64,1,s)
+
+    for i in 1:s
+        ind_z1[1,i] = pop[i].z1
+        ind_z2[1,i] = pop[i].z2
+    end
+
+    return pop[sortperm(vec(ind_z1), rev=true)], pop[sortperm(vec(ind_z2), rev=true)]
+end
+
+function calc_distance_i_pop(s :: solution, pop :: Vector{solution})
+    d = size(pop)[1]
+    Ar = Vector{Int64}()
+    for j in 1:d
+        push!(Ar,calc_distance(s,pop[j]))
+    end
+    return Ar
+end
+
+function v_calc_distance(pop :: Vector{solution})
+    s = size(pop)[1]
+    Ar = zeros(Int64, 1, s)
+    for i in 1:s
+        copy_pop = deepcopy(pop)
+        popat!(copy_pop, i)
+        Ar[i] = minimum(calc_distance_i_pop(pop[i],copy_pop))
+    end
+
+    #println("Ar = ",Ar)
+    #println("sortperm = ",sortperm(vec(Ar),rev=true))
+    return sortperm(vec(Ar),rev=true)
+end

@@ -16,7 +16,7 @@ function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Ve
         println("J (",J,")*C(",C,") (",J*C,") < K (",K,")\n résolution impossible, fin de programme")
     else
         if p == 0 
-            model = build_z1_model(I,J,K,C,Ac[2:5])
+            model = build_z1_model(I,J,K,C,p,Ac[2:5])
             optimize!(model)
             print_z1_model(model)
             zk = value.(model[:zk])
@@ -39,9 +39,9 @@ function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Ve
 
         #z1
         s = grasp_z1(s, I,J,K,C, Axjk, Ayij, AzJ ,alpha[2:3])
-    
+        s.z1, s.z2 = calcZ_solution(s, M, Ad, AzK, AzJ, Axjk, Ayij)
     end
-        #println("I = ",I," J = ",J," K = ",K)
+        
 
     return s
 end
@@ -56,7 +56,7 @@ function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 
     s = fill_xjk(s, Axjk, AzJ,alpha[1])
 
     #Filling yij with the best choices, opening all zJ
-    s = fill_yij(s, I ,Ayij, C, alpha[2])
+    s = connect_i_yij(s, collect(1:I) ,s.zJ,Ayij, C)
 
     #Using DROP_heuristics for facility location and grasp
     #s = grasp_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ,alpha[3])
@@ -104,7 +104,7 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
                 end
             end
             minZ = max * alpha
-            println("max = ",max,", min = ",minZ)
+            #println("max = ",max,", min = ",minZ)
             indexes = Vector{Int64}()
             for i in 1:K
                 if !(i in memory)
@@ -113,11 +113,11 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
                     end
                 end
             end
-            println("indexes = ", indexes,", memory = ",memory)
+            #println("indexes = ", indexes,", memory = ",memory)
             i = rand_in_list(indexes)
             append!(memory,indexes[i])
             zK[1,indexes[i]] = 1
-            println("zK = ",zK)
+            #println("zK = ",zK)
         end
     end
     return zK

@@ -74,6 +74,55 @@ function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: 
     return z1,z2
 end
 
+function compare_solution(s1 :: solution, s2 :: solution)
+    bool = true
+    if s1.zJ != s2.zJ
+        bool = false
+    else
+        if s1.zK != s2.zK
+            bool = false
+        else
+            if s1.x != s2.x
+                bool = false
+            else
+                if s1.y != s2.y
+                    bool = false
+                end
+            end
+        end 
+    end
+    return bool
+end
+
+function calc_distance(s1 :: solution, s2 :: solution)
+    sumD = 0 
+    for i in 1:size(s1.x)[1]
+        for j in 1:size(s1.x)[2]
+            if s1.x[i,j] != s2.x[i,j]
+                sumD += 1
+            end
+        end
+    end
+    for i in 1:size(s1.y)[1]
+        for j in 1:size(s1.y)[2]
+            if s1.y[i,j] != s2.y[i,j]
+                sumD += 1
+            end
+        end
+    end
+    for i in 1:size(s1.zJ)[1]
+        if s1.zJ[i] != s2.zJ[i]
+            sumD += 1
+        end
+    end
+    for i in 1:size(s1.zK)[1]
+        if s1.zK[i] != s2.zK[i]
+            sumD += 1
+        end
+    end
+    return sumD
+end
+
 function print_solution(s :: solution, io = "")
     # println(s.zJ)
     # println(s.zK)
