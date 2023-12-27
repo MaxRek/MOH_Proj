@@ -25,7 +25,7 @@ end
 function write_Instance(path_data :: String, ratio :: Vector{Float64}, rM :: Float64)
     dfS, dfInfoS = build_Instance(path_data, ratio)
     Ac, M = build_Costs(dfS, rM)
-    name = string(Int(size(Ac[3])[1]/size(Ac[4])[1]),"_",size(Ac[4])[1],"_",size(Ac[5])[1])
+    name = string(size(Ac[5])[1],"_",size(Ac[4])[1],"_",Int(size(Ac[3])[1]/size(Ac[4])[1]))
 
     path = String("in/instance/"*name)
     if(!isdir(path))

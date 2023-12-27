@@ -74,11 +74,60 @@ function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
     end
     #println("ZK = ",ZK)
 
-    return -(sum(ZK))
+    return -sum(ZK)
 end
 
 function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})
     return calcZ1(s.x,s.y,s.zJ,s.zK , AzK , AzJ, Axjk, Ayij),calcZ2(s.zK, M,Ad)
+end
+
+function compare_solution(s1 :: solution, s2 :: solution)
+    bool = true
+    if s1.zJ != s2.zJ
+        bool = false
+    else
+        if s1.zK != s2.zK
+            bool = false
+        else
+            if s1.x != s2.x
+                bool = false
+            else
+                if s1.y != s2.y
+                    bool = false
+                end
+            end
+        end 
+    end
+    return bool
+end
+
+function calc_distance(s1 :: solution, s2 :: solution)
+    sumD = 0 
+    for i in 1:size(s1.x)[1]
+        for j in 1:size(s1.x)[2]
+            if s1.x[i,j] != s2.x[i,j]
+                sumD += 1
+            end
+        end
+    end
+    for i in 1:size(s1.y)[1]
+        for j in 1:size(s1.y)[2]
+            if s1.y[i,j] != s2.y[i,j]
+                sumD += 1
+            end
+        end
+    end
+    for i in 1:size(s1.zJ)[1]
+        if s1.zJ[i] != s2.zJ[i]
+            sumD += 1
+        end
+    end
+    for i in 1:size(s1.zK)[1]
+        if s1.zK[i] != s2.zK[i]
+            sumD += 1
+        end
+    end
+    return sumD
 end
 
 function print_solution(s :: solution, io = "")
@@ -180,4 +229,45 @@ function print_solution(s :: solution, io = "")
             end
         end
     end
+end
+
+function light_print_solution(s :: solution)
+    # println(s.zJ)
+    # println(s.zK)
+    println("z1 = ", s.z1,", z2 = ",s.z2)
+
+    print("} \n zk : {")
+    for i in 1:size(s.zK)[1]
+        if(s.zK[i] >= 0.9)
+            print(i," ")
+        end
+    end
+
+    print("} \nzj : {")
+    for i in 1:size(s.zJ)[1]
+        if(s.zJ[i] >= 0.9)
+            print(i," ")
+        end
+    end
+
+    # print("}\n Yij = {")
+    # for j in 1:size(s.y)[2]
+    #     for i in 1:size(s.y)[1]
+    #         if(s.y[i,j] >= 0.9)
+    #             print("(",i,",",j,") ")
+    #         end
+    #     end
+    # end
+
+    # print("} \nxjk = {")
+    # for k in 1:size(s.x)[2]
+    #     for j in 1:size(s.x)[1]
+    #         if(s.x[j,k] >= 0.9)
+    #             print("(",j,",",k,") ")
+    #         end
+    #     end
+    # end
+
+    println("}")
+
 end

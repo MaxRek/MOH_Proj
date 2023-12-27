@@ -32,10 +32,10 @@ function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 
     # println(m_cl1_t)    
 
     #filling xjk for the almost best grasp, at least one connection to k
-    s = fill_xjk(s, Axjk, AzJ,alpha[1])
+    s = fill_xjk(s, Axjk, AzJ,alpha)
 
-    #Filling yij with the best choices, opening maximum of zJ
-    s = connect_i_yij(s, collect(1:I) ,findall(x->x==1,s.zJ),Ayij, C)
+    #Filling yij with the best choices, opening all zJ
+    s = connect_i_yij(s, collect(1:I) ,collect(1:size(s.zJ)[1]),Ayij, C)
 
     #Using DROP_heuristics for facility location and grasp
     s = capacitated_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ)
