@@ -56,7 +56,7 @@ function calcZ1(x :: Matrix{Int64}, y :: Matrix{Int64}, zj :: Vector{Int64}, zk 
         #println("z1 = ",z1,", AzK[k] = ",AzK[k])
     end
 
-    return z1
+    return -z1
 end
 
 function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
@@ -74,7 +74,7 @@ function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
     end
     #println("ZK = ",ZK)
 
-    return -(sum(ZK))
+    return sum(ZK)
 end
 
 function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})

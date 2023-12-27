@@ -2,13 +2,7 @@ include("../struct/solution.jl")
 include("../model/model.jl")
 include("tools.jl")
 
-<<<<<<< HEAD
-
-
-function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Vector{Float64},p)
-=======
 function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Vector{Float64},p = 0)
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
     K = size(Ac[5])[1]
     J = size(Ac[4])[1]
     I = Int(size(Ac[3])[1]/J)
@@ -16,40 +10,6 @@ function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Ve
     Axjk = reshape(Ac[2],J,K)
     Ayij = reshape(Ac[3],I,J)
     AzJ = Ac[4]
-<<<<<<< HEAD
-    if(J*C < K)
-        println("J (",J,")*C(",C,") (",J*C,") < K (",K,")\n résolution impossible, fin de programme")
-    else
-        if p == 0 
-            model = build_z1_model(I,J,K,C,p,Ac[2:5])
-            optimize!(model)
-            print_z1_model(model)
-            zk = value.(model[:zk])
-            for i in zk
-                if i > 0.9
-                    p += 1
-                end
-            end
-            if p == 1
-                p = 2
-            end
-            #println("p = ", p)
-        end
-
-        s = init_solution(I,J,K)
-        
-        #z2
-        s.zK = vec(grasp_z2(Ad, K, p, M, alpha[1]))
-        #println("zK = ",solution.zK)
-
-        #z1
-        s = grasp_z1(s, I,J,K,C, Axjk, Ayij, AzJ ,alpha[2:3])
-        s.z1, s.z2 = calcZ_solution(s, M, Ad, AzK, AzJ, Axjk, Ayij)
-    end
-        
-
-    return s
-=======
 
     #println("I = ",I," J = ",J," K = ",K)
 
@@ -63,7 +23,6 @@ function grasp(Ac :: Vector{Vector{Int64}}, M :: Int64 ,C :: Int64 , alpha :: Ve
     solution = grasp_z1(solution, I,J,K,C, Axjk, Ayij, AzJ ,alpha[2])
 
     return solution
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
 end
 
 function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 , Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64}, AzJ :: Vector{Int64}, alpha :: Float64)
@@ -75,19 +34,11 @@ function grasp_z1(s :: solution, I :: Int64, J :: Int64, K :: Int64, C :: Int64 
     #filling xjk for the almost best grasp, at least one connection to k
     s = fill_xjk(s, Axjk, AzJ,alpha[1])
 
-<<<<<<< HEAD
     #Filling yij with the best choices, opening all zJ
     s = connect_i_yij(s, collect(1:I) ,s.zJ,Ayij, C)
 
     #Using DROP_heuristics for facility location and grasp
     #s = grasp_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ,alpha[3])
-=======
-    #Filling yij with the best choices, opening maximum of zJ
-    s = connect_i_yij(s, collect(1:I) ,findall(x->x==1,s.zJ),Ayij, C)
-
-    #Using DROP_heuristics for facility location and grasp
-    s = capacitated_drop_heuristic(s,I,J,K,C, Axjk, Ayij, AzJ)
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
 
     return s
 end
@@ -191,13 +142,8 @@ function grasp_z2(Ad :: Matrix{Int64}, K :: Int64, p :: Int64, M :: Int64 ,alpha
                     end
                 end
             end
-<<<<<<< HEAD
-            minZ = max * alpha
-            #println("max = ",max,", min = ",minZ)
-=======
             threshold = minK + alpha * (maxK - minK)
             #println("max = ",maxK,", min = ",minK,", threshold = ",threshold,"\n ZKt = ",ZKt)
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
             indexes = Vector{Int64}()
             for i in 1:K
                 if !(i in memory)

@@ -5,11 +5,7 @@ include("src/scater_search/scater_search.jl")
 
 #parameter
 ratios = [1.0,0.2,0.007]
-<<<<<<< HEAD
 alphas = [0.5,0.5]
-=======
-alphas = [0.5,0.5,0.25]
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
 C = 3
 rM = 2.0
 p = 5
@@ -23,12 +19,6 @@ p = 5
 dfS, dfInfos, Ac, M = load_Instance("75_42_10")
 
 #Parsing
-<<<<<<< HEAD
-dfS, dfInfoS, Ac, M = load_Instance("75_42_10")
-#Ac, M = build_Costs(dfS, rM)
-=======
-
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
 K = size(Ac[5])[1]
 J = size(Ac[4])[1]
 I = Int(size(Ac[3])[1]/J)
@@ -47,12 +37,6 @@ s = grasp(Ac,M,C,alphas,3)
 # z1, z2 = calcZ_solution(s , M ,Ad ,AzK , AzJ, Axjk, Ayij)
 
 # Modeles
-<<<<<<< HEAD
-# z1_model = build_z1_model(I,J,K,C, Ac[2:5])
-# z2_model = build_z2_model(Ac[1], M, p, K)
-# MO_model = build_MO_model(Ac[1], Ac[2:5],I,J,K,M,C,p)
-=======
 #z1_model = build_z1_model(I,J,K,C, Ac[2:5], p)
 #z2_model = build_z2_model(Ac[1], M, p, K)
 #MO_model = build_MO_model(Ac[1], Ac[2:5],I,J,K,M,C,p)
->>>>>>> 1f7b220d18c20a7d6d35d60314f54b41341f65fc
