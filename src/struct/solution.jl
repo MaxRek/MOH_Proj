@@ -145,9 +145,9 @@ function print_solution(s :: solution, io = "")
                     end
                     print(i," ")
                 end
-                if bool
-                    print("}")
-                end
+            end
+            if bool
+                print("}")
             end
         end
 
@@ -168,9 +168,9 @@ function print_solution(s :: solution, io = "")
                     end
                     print(j," ")
                 end
-                if bool
-                    print("}")
-                end
+            end
+            if bool
+                print("}")
             end
         end
 
