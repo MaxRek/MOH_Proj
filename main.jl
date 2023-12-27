@@ -16,7 +16,7 @@ p = 5
 
 #else
 
-dfS, dfInfos, Ac, M = load_Instance("75_42_10")
+dfS, dfInfos, Ac, M = load_Instance("10_42_21")
 
 #Parsing
 K = size(Ac[5])[1]
@@ -28,12 +28,20 @@ Ayij = reshape(Ac[3],I,J)
 Ad = reshape(Ac[1],K,K)
 AzJ = Ac[4]
 AzK = Ac[5]
-s = grasp(Ac,M,5,[0.5,0.5,0.25],3)
-s.z1, s.z2 = calcZ_solution(s , M ,Ad ,AzK , AzJ, Axjk, Ayij)
+s1 = grasp(Ac,M,5,[0.0,0.0],3)
+s2 = grasp(Ac,M,5,[0.0,0.0],3)
 
-scater_search(20, Ac, M, C , 100, ratios, 3)
 
-s = grasp(Ac,M,C,alphas,3)
+subSet = Vector{Tuple{solution,solution}}()
+push!(subSet, (s2,s1))
+
+solution_combination(subSet)
+print_solution(s2)
+print_solution(s1)
+println("bababoui")
+
+#scater_search(20, Ac, M, C , 100, ratios, 3)
+
 # z1, z2 = calcZ_solution(s , M ,Ad ,AzK , AzJ, Axjk, Ayij)
 
 # Modeles

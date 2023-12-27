@@ -56,7 +56,7 @@ function calcZ1(x :: Matrix{Int64}, y :: Matrix{Int64}, zj :: Vector{Int64}, zk 
         #println("z1 = ",z1,", AzK[k] = ",AzK[k])
     end
 
-    return -z1
+    return z1
 end
 
 function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
@@ -74,7 +74,7 @@ function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
     end
     #println("ZK = ",ZK)
 
-    return sum(ZK)
+    return -sum(ZK)
 end
 
 function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})
@@ -226,4 +226,45 @@ function print_solution(s :: solution, io = "")
         println(io,"\n")
 
     end
+end
+
+function light_print_solution(s :: solution)
+    # println(s.zJ)
+    # println(s.zK)
+    println("z1 = ", s.z1,", z2 = ",s.z2)
+
+    print("} \n zk : {")
+    for i in 1:size(s.zK)[1]
+        if(s.zK[i] >= 0.9)
+            print(i," ")
+        end
+    end
+
+    print("} \nzj : {")
+    for i in 1:size(s.zJ)[1]
+        if(s.zJ[i] >= 0.9)
+            print(i," ")
+        end
+    end
+
+    # print("}\n Yij = {")
+    # for j in 1:size(s.y)[2]
+    #     for i in 1:size(s.y)[1]
+    #         if(s.y[i,j] >= 0.9)
+    #             print("(",i,",",j,") ")
+    #         end
+    #     end
+    # end
+
+    # print("} \nxjk = {")
+    # for k in 1:size(s.x)[2]
+    #     for j in 1:size(s.x)[1]
+    #         if(s.x[j,k] >= 0.9)
+    #             print("(",j,",",k,") ")
+    #         end
+    #     end
+    # end
+
+    println("}")
+
 end
