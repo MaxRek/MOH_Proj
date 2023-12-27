@@ -11,7 +11,7 @@ rM = 2.0
 p = 5
 
 # If we need instance
-# dfS, dfInfoS = build_Instance("in/data/", ratios)
+#write_Instance("in/data", [1.0,0.2,0.007], 1.5)
 # Ac, M = build_Costs(dfS, rM)
 
 #else
