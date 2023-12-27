@@ -1,6 +1,6 @@
 include("parseur.jl")
 
-using Distances
+using Distances, DataFrames, CSV
 
 function indexList(max :: Int64, s :: Int64)
     index = Vector{Int64}()
@@ -22,6 +22,78 @@ function indexList(max :: Int64, s :: Int64)
     return sort(index)
 end
 
+function write_Instance(path_data :: String, ratio :: Vector{Float64}, rM :: Float64)
+    dfS, dfInfoS = build_Instance(path_data, ratio)
+    Ac, M = build_Costs(dfS, rM)
+    name = string(Int(size(Ac[3])[1]/size(Ac[4])[1]),"_",size(Ac[4])[1],"_",size(Ac[5])[1])
+
+    path = String("in/instance/"*name)
+    if(!isdir(path))
+        mkdir(path)
+    end
+    for i in 1:3
+        CSV.write(string(path*"/dfS_",i,".csv"), dfS[1])
+        CSV.write(string(path,"/dfInfoS_",i,".csv"), dfInfoS[1])
+    end
+
+    io = open(string(path,"/Ac.txt"),"w")
+    println(io, Ac)
+    println(io, M)
+    close(io)
+end
+
+function write_Instance(name :: String, dfS :: Vector{DataFrame}, dfInfoS :: Vector{DataFrame}, Ac :: Vector{Vector{Int64}}, M :: Int64)
+    path = String("in/instance/"*name)
+    if(!isdir(path))
+        mkdir(path)
+    end
+    for i in 1:3
+        CSV.write(string(path*"/dfS_",i,".csv"), dfS[1])
+        CSV.write(string(path,"/dfInfoS_",i,".csv"), dfInfoS[1])
+    end
+    io = open(string(path,"/Ac.txt"),"w")
+    println(io, Ac)
+    println(io, M)
+    close(io)
+end
+
+function load_Instance(name :: String)
+    dfS = Vector{DataFrame}()
+    dfInfoS = Vector{DataFrame}()
+    Ac = Vector{Vector{Int64}}()
+    path = String("in/instance/"*name)
+
+    for i in 1:3
+        push!(dfS, CSV.read(string(path,"/dfS_",i,".csv"), DataFrame))
+        push!(dfInfoS, CSV.read(string(path,"/dfInfoS_",i,".csv"), DataFrame))
+    end
+
+    str = open(string(path,"/Ac.txt")) do file
+        read(file, String)
+    end
+
+    line = findfirst("\n", str)
+    str = [str[1:line[1]],str[line[1]:length(str)-1]]
+    
+    i = findall("], [", str[1])
+    push!(i,findfirst("[[", str[1]))
+    push!(i,findfirst("]]", str[1]))
+    i = sort(i)
+
+    #println(i)
+
+    for j in 1:5
+        #println(i[j][2]+1, " " , i[j+1][1]-1," str = ",str[i[j][2]+1:i[j+1][1]-1],"\n___________________________")
+        if(j == 1)
+            push!(Ac, parse.(Int64,split(str[1][i[j][2]+1:i[j+1][1]-1],", ")))
+        else
+            push!(Ac, parse.(Int64,split(str[1][i[j][2]+3:i[j+1][1]-1],", ")))
+        end
+    end
+
+    return dfS, dfInfoS, Ac, parse(Int64,str[2])
+end
+
 function build_Instance(path :: String, ratio :: Vector{Float64})
     dfS, dfInfoS = parseData(path)
     dfSc = deepcopy(dfS)
@@ -39,7 +111,7 @@ function build_Instance(path :: String, ratio :: Vector{Float64})
 end
 
 #Renvoie 
-#   - M plus grande distance * 1.5 (Int64)
+#   - M plus grande distance * rM (Int64)
 #   - Ac, tableaux de coûts où i :
 #       - 1 : Distance entre les concentrateurs lvl 2, pour z2
 #       - 2 : Connection d'un connecteur lvl 2 à lvl 1
@@ -47,8 +119,7 @@ end
 #       - 4 : coût ouverture concentrateur lvl 1
 #       - 5 : coût ouverture concentrateur lvl 2
 
-
-function build_Costs(dfS :: Vector{DataFrame})
+function build_Costs(dfS :: Vector{DataFrame}, rM :: Float64)
     #A = Dict()
     Ac = Vector{Vector{Int64}}()
     cumul1 = 0
@@ -124,5 +195,5 @@ function build_Costs(dfS :: Vector{DataFrame})
         #A["zk",j] = round(Int64,0.75*moyenne2+rand()*moyenne2*0.5)*10
     end
 
-    return Ac, round(Int64,M*1.5)
+    return Ac, round(Int64,M*rM)
 end

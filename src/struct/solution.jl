@@ -21,16 +21,15 @@ function init_solution(I :: Int64, J :: Int64, K :: Int64)
     return solution(0,0,x,y,zk,zj)
 end
 
-function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})
+function calcZ1(x :: Matrix{Int64}, y :: Matrix{Int64}, zj :: Vector{Int64}, zk :: Vector{Int64}, AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})
     z1 = 0
-    z2 = 0
     K = size(AzK)[1]
     J = size(AzJ)[1]
     I = size(Ayij)[1]/J
-    Kp = findall(x->x==1,s.zK)
-    Jp = findall(x->x==1,s.zJ)
-    xp = findall(x->x==1,s.x)
-    yp = findall(x->x==1,s.y)
+    Kp = findall(x->x==1,zk)
+    Jp = findall(x->x==1,zj)
+    xp = findall(x->x==1,x)
+    yp = findall(x->x==1,y)
 
     #Compute z1
     # zK 
@@ -57,7 +56,13 @@ function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: 
         #println("z1 = ",z1,", AzK[k] = ",AzK[k])
     end
 
+    return z1
+end
+
+function calcZ2(zk :: Vector{Int64}, M :: Int64 ,Ad :: Matrix{Int64})
     #Compute z2
+    Kp = findall(x->x==1,zk)
+
     ZK = Vector{Int64}()
     #println("Kp = ",Kp)
     for k in Kp
@@ -69,9 +74,11 @@ function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: 
     end
     #println("ZK = ",ZK)
 
-    z2 = sum(ZK)
+    return -(sum(ZK))
+end
 
-    return z1,z2
+function calcZ_solution(s :: solution, M :: Int64 ,Ad :: Matrix{Int64}  ,AzK :: Vector{Int64}, AzJ :: Vector{Int64}, Axjk :: Matrix{Int64}, Ayij :: Matrix{Int64})
+    return calcZ1(s.x,s.y,s.zJ,s.zK , AzK , AzJ, Axjk, Ayij),calcZ2(s.zK, M,Ad)
 end
 
 function print_solution(s :: solution, io = "")
