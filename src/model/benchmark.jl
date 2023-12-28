@@ -19,7 +19,7 @@ function benchmark_model(name :: String, C :: Int64, p :: Int64, timeLimit :: In
     AMOresults = Vector{Vector{Int64}}()
     
     models = [
-        build_z1_model(I,J,K,C, Ac[2:5]),
+        build_z1_model(I,J,K,C, Ac[2:5],p),
         build_z2_model(Ac[1], M, p, K),
         build_MO_model(Ac[1], Ac[2:5],I,J,K,M,C,p)
         ]
