@@ -10,13 +10,17 @@ C = 3
 rM = 2.0
 p = 5
 
-# If we need instance
-#write_Instance("in/data", [1.0,0.2,0.007], 1.5)
-# Ac, M = build_Costs(dfS, rM)
+if(!isdir("in/instance/"))
+    makedir("in/instance/")
+end
 
-#else
+if(length(readdir("in/instance")) == 0)
+    write_Instance("in/data/", [1.0,0.2,0.007], 1.5)
+end
 
-dfS, dfInfos, Ac, M = load_Instance("10_42_21")
+names = getfname("in/instance/")
+
+dfS, dfInfos, Ac, M = load_Instance(names[1])
 
 #Parsing
 K = size(Ac[5])[1]
