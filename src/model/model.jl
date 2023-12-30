@@ -69,7 +69,6 @@ function build_z1_model(I :: Int64, J :: Int64, K :: Int64, C :: Int64, Ac :: Ve
     if timelimit > 0.0
         set_time_limit_sec(model, timelimit)
     end
-    print(Ac[2])
 
     #Variables
     @variable(model, x[j in 1:J,k in 1:K], Bin)
@@ -103,7 +102,7 @@ function build_z1_model(I :: Int64, J :: Int64, K :: Int64, C :: Int64, Ac :: Ve
         @constraint(model, capacite_cl1_[j in 1:J], sum(y[i,j] for i in 1:I) <= C )
 
     #Fonction Objective
-    @objective(model, Min, sum(x[j,k]*Ac[1][((k-1)*K)+j] for j in 1:J for k in 1:K) ) + sum(y[i,j]*Ac[2][((j-1)*J)+i] for i in 1:I for j in 1:J) + sum(zj[j]*Ac[3][j] for j in 1:J) + sum(zk[k]*Ac[4][k] for k in 1:K)
+    @objective(model, Min, sum(x[j,k]*Ac[1][((k-1)*K)+j] for j in 1:J for k in 1:K)+ sum(y[i,j]*Ac[2][((j-1)*J)+i] for i in 1:I for j in 1:J)+ sum(zj[j]*Ac[3][j] for j in 1:J)+ sum(zk[k]*Ac[4][k] for k in 1:K))
 
     return model
 end
@@ -128,7 +127,7 @@ function build_z2_model(Ad :: Vector{Int64}, M :: Int64, p :: Int64 ,K :: Int64,
         @constraint(model, lim_kp_Z[k in 1:K], Zk[k] <= sum(Ad[((k-1)*K)+kp]*zk[kp] for kp in 1:K if kp != k) )
     
     #Fonction objective : Maximiser Zk
-    @objective(model, Max, sum(Zk[k] for k in 1:K))
+    @objective(model, Min, sum( -Zk[k] for k in 1:K))
 
     return model
 end

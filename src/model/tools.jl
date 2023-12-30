@@ -1,6 +1,7 @@
 
 include("../tools/gen.jl")
 
+
 function print_z2_model(model :: Model,K :: Vector{Int64}, Ad :: Vector{Int64}, io = "")
     n = size(K)[1]
     zk = value.(model[:zk])
